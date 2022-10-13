@@ -1,15 +1,7 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div
+    className="container vw-100 pt-5 d-flex justify-content-center align-items-center h2"
+  >
+    Hey there! You are on About page.
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
