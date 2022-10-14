@@ -1,6 +1,5 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { watchEffect } from "vue-demi";
 import { useAuthStore } from "../stores/auth.store";
 
 const authStore = useAuthStore();
@@ -37,14 +36,18 @@ const { state } = storeToRefs(authStore);
 
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <RouterLink to="/" class="nav-link active"> Home </RouterLink>
+              <RouterLink to="/" class="nav-link"> Home </RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink to="/about" class="nav-link"> About </RouterLink>
             </li>
             <li v-if="state.isAuthenticated" class="nav-item">
-              <div className=" text-decoration-none fs-4">
-                <span className="mb-lg-0 text-info ">Hello, {user}</span>
+              <div v-if="state.user">
+                <div className=" text-decoration-none fs-4 mb-2 mb-lg-0">
+                  <span className="mb-lg-0 text-info "
+                    >Hello, {{ state.user.name }}</span
+                  >
+                </div>
               </div>
             </li>
             <li v-if="state.isAuthenticated" class="nav-item">

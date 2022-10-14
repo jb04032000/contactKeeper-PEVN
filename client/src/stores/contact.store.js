@@ -1,50 +1,85 @@
-import { ref, computed, reactive } from "vue";
+import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
-
-let initialState = {
-  contactUpdated: false,
-  contacts: [],
-  filteredContacts: [],
-  currentContact: null,
-  message: "",
-  error: null,
-  loading: false,
-};
+import {
+  addContactService,
+  deleteContactService,
+  getContactListService,
+  updateContactService,
+} from "./services/contact.services";
 
 export const useCounterStore = defineStore("contact", () => {
-  let state = reactive({ ...initialState });
+  let state = reactive({
+    contactUpdated: false,
+    contacts: [],
+    filteredContacts: [],
+    currentContact: null,
+    message: "",
+    error: null,
+    loading: false,
+  });
 
-  let doubleCount = computed(() => count.value * 2);
+  const contacts = (action, cb) => {
+    return (payload) => {
+      state.loading = true;
+      const response = action(payload);
+      response
+        .then((res) => {
+          cb(res, payload);
+        })
+        .catch(() => {
+          contactOperationFail();
+        })
+        .finally(() => {
+          state.loading = false;
+          state.message = "";
+          state.error = null;
+        });
+    };
+  };
 
-  function getContactList(action) {
+  function contactOperationFail() {
     state.loading = false;
-    state.contacts = action.payload;
+    state.contacts = [];
+    state.filteredContacts = [];
+    state.contactUpdated = false;
+    state.currentContact = null;
+    state.message = "";
+    state.error = null;
+    state.loading = false;
   }
-  function addContact(action) {
-    state.loading = false;
-    state.contacts = [...state.contacts, action.payload];
-  }
-  function updateContact() {
-    state.loading = false;
+
+  const getContactListSuccess = (action) => {
+    state.contacts = action.data;
+  };
+  const getContactList = contacts(getContactListService, getContactListSuccess);
+
+  const addContactSuccess = (action) => {
+    state.contacts = [...state.contacts, action.data];
+  };
+  const addContact = contacts(addContactService, addContactSuccess);
+
+  const updateContactSuccess = () => {
     state.contactUpdated = true;
+  };
+  const updateContact = contacts(updateContactService, updateContactSuccess);
+
+  const deleteContactSuccess = (action, id) => {
+    state.contacts = state.contacts.filter((contact) => contact.id !== id);
+  };
+  const deleteContact = contacts(deleteContactService, deleteContactSuccess);
+
+  function setCurrentContact(payload) {
+    state.currentContact = payload;
   }
-  function deleteContact(action) {
-    state.loading = false;
-    state.contacts = state.contacts.filter(
-      (contact) => contact.id !== action.payload
-    );
-  }
-  function setCurrentContact(action) {
-    state.currentContact = action.payload;
-  }
+
   function clearCurrentContact() {
     state.currentContact = null;
   }
-  function setfilterContacts() {
+  function setfilterContacts(data) {
     state.filteredContacts = state.contacts.filter(
       (contact) =>
-        contact.name.toLowerCase().includes(action.payload.toLowerCase()) ||
-        contact.email.toLowerCase().includes(action.payload.toLowerCase())
+        contact.name.toLowerCase().includes(data.toLowerCase()) ||
+        contact.email.toLowerCase().includes(data.toLowerCase())
     );
   }
   function clearFilteredContacts() {

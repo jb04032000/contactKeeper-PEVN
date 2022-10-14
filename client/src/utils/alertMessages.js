@@ -1,4 +1,5 @@
 const alertMessage = {
+  invalidPhone: "Please enter valid phone number.",
   invaliduser: "Invalid username or password. please try again later.",
   serviceTimeout:
     "Service timeout error: Service is not responding. Please contact system admin.",

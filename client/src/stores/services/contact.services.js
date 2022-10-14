@@ -4,47 +4,12 @@ import API_URLS, { baseUrl } from "../../utils/apiUrls";
 import Notification from "../../utils/Notification";
 import setAuthToken from "../../utils/setAuthToken";
 
-// register New User
-export async function registerUserService(payload) {
-  const url = baseUrl + `${API_URLS.users}`;
-
-  if (navigator.onLine) {
-    return await axios
-      .post(url, payload)
-      .then((response) => {
-        if (response.status === 200) {
-          Notification("success", alertMessage.registerSuccess);
-          return {
-            loading: false,
-            message: "Success",
-            success: true,
-            data: response.data,
-          };
-        } else {
-          Notification("error", alertMessage.somethingWentWrong);
-          return {
-            loading: false,
-            success: false,
-            data: "",
-            error: "",
-          };
-        }
-      })
-      .catch((err) => {
-        console.log("err", err.message);
-        Notification("error", err.message);
-      });
-  } else {
-    Notification("warning", alertMessage.noInternet);
-  }
-}
-
-// load User
-export async function loadUserService() {
+// get contact list
+export async function getContactListService() {
   if (localStorage.contactKeeperToken) {
     setAuthToken(localStorage.contactKeeperToken);
   }
-  const url = baseUrl + `${API_URLS.auth}`;
+  const url = baseUrl + `${API_URLS.contacts}`;
   if (navigator.onLine) {
     return await axios
       .get(url)
@@ -56,7 +21,6 @@ export async function loadUserService() {
             data: response.data,
           };
         } else {
-          Notification("error", alertMessage.somethingWentWrong);
           return {
             success: false,
             data: "",
@@ -64,24 +28,24 @@ export async function loadUserService() {
           };
         }
       })
-      .catch((err) => {
-        console.log("err", err.message);
-        Notification("error", err.message);
-      });
+      .catch((err) => console.log(err));
   } else {
     Notification("warning", alertMessage.noInternet);
   }
 }
 
-// login User
-export async function loginUserService(payload) {
-  const url = baseUrl + `${API_URLS.auth}`;
+// add contact
+export async function addContactService(payload) {
+  if (localStorage.contactKeeperToken) {
+    setAuthToken(localStorage.contactKeeperToken);
+  }
+  const url = baseUrl + `${API_URLS.contacts}`;
   if (navigator.onLine) {
     return await axios
       .post(url, payload)
       .then((response) => {
         if (response.status === 200) {
-          Notification("success", alertMessage.loginSuccess);
+          Notification("success", alertMessage.addedSuccess);
           return {
             message: "Success",
             success: true,
@@ -96,10 +60,73 @@ export async function loginUserService(payload) {
           };
         }
       })
-      .catch((err) => {
-        console.log("err", err.message);
-        Notification("error", err.message);
-      });
+      .catch((err) => console.log(err));
+  } else {
+    Notification("warning", alertMessage.noInternet);
+  }
+}
+
+// update contact
+export async function updateContactService(payload) {
+  if (localStorage.contactKeeperToken) {
+    setAuthToken(localStorage.contactKeeperToken);
+  }
+
+  const url = baseUrl + `${API_URLS.contacts}/${payload.id}`;
+  if (navigator.onLine) {
+    return await axios
+      .put(url, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          Notification("success", alertMessage.updateSuccess);
+          return {
+            message: "Success",
+            success: true,
+            data: response.data,
+          };
+        } else {
+          Notification("error", alertMessage.somethingWentWrong);
+          return {
+            success: false,
+            data: "",
+            error: "",
+          };
+        }
+      })
+      .catch((err) => console.log(err));
+  } else {
+    Notification("warning", alertMessage.noInternet);
+  }
+}
+
+// delete contact
+export async function deleteContactService(payload) {
+  if (localStorage.contactKeeperToken) {
+    setAuthToken(localStorage.contactKeeperToken);
+  }
+
+  const url = baseUrl + `${API_URLS.contacts}/${payload}`;
+  if (navigator.onLine) {
+    return await axios
+      .delete(url)
+      .then((response) => {
+        if (response.status === 200) {
+          Notification("success", alertMessage.deleteSuccess);
+          return {
+            message: "Success",
+            success: true,
+            data: response.data,
+          };
+        } else {
+          Notification("error", alertMessage.somethingWentWrong);
+          return {
+            success: false,
+            data: "",
+            error: "",
+          };
+        }
+      })
+      .catch((err) => console.log(err));
   } else {
     Notification("warning", alertMessage.noInternet);
   }

@@ -1,25 +1,22 @@
 <script setup>
-import { storeToRefs } from "pinia";
-import { watchEffect } from "vue-demi";
-import router from "../router";
-import { useAuthStore } from "../stores/auth.store";
+import ContactForm from "../components/ContactForm.vue";
+import ContactList from "../components/ContactList.vue";
+import useHomepage from "../components/composables/useHomepage";
 
-const authStore = useAuthStore();
-const { state } = storeToRefs(authStore);
-
-watchEffect(() => {
-  if (!state.value.isAuthenticated) {
-    router.push({ path: "/login" });
-  }
-});
+useHomepage();
 </script>
 
 <template>
   <main>
-    <div
-      className="container vw-100 pt-5 d-flex justify-content-center align-items-center h2"
-    >
-      Hey there! You are on Home page.
+    <div class="container pt-5 vw-100" style="overflowx: hidden">
+      <div class="row py-2 px-2 gx-5 gy-3 d-flex justify-content-evenly">
+        <div class="col-md-5 col-lg-4">
+          <ContactForm />
+        </div>
+        <div class="col-md-5 col-lg-4 mb-2 pb-3" style="overflowx: hidden">
+          <ContactList />
+        </div>
+      </div>
     </div>
   </main>
 </template>

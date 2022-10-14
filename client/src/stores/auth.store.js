@@ -1,46 +1,58 @@
 import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
-import { registerNewUser } from "./services/auth.services";
+import {
+  registerUserService,
+  loginUserService,
+  loadUserService,
+} from "./services/auth.services";
 import setAuthToken from "../utils/setAuthToken";
 
-let initialState = {
-  token: localStorage.getItem("contactKeeperToken") || "",
-  isAuthenticated: localStorage.getItem("contactKeeperToken") ? true : false,
-  message: "",
-  error: null,
-  loading: false,
-  user: [],
-};
-
 export const useAuthStore = defineStore("auth", () => {
-  let state = reactive({ ...initialState });
+  let state = reactive({
+    token: localStorage.getItem("contactKeeperToken") || "",
+    isAuthenticated: localStorage.getItem("contactKeeperToken") ? true : false,
+    message: "",
+    error: null,
+    loading: false,
+    user: [],
+  });
 
   let doubleCount = computed(() => count.value * 2);
 
-  function registerUser(payload) {
-    state.loading = true;
-    const response = registerNewUser(payload);
-    response
-      .then((res) => {
-        state.token = res.data.token;
-        state.isAuthenticated = true;
-        localStorage.setItem("contactKeeperToken", res.data.token);
-      })
-      .catch(() => {
-        state.token = "";
-        state.isAuthenticated = false;
-        localStorage.removeItem("contactKeeperToken");
-      })
-      .finally(() => {
-        state.loading = false;
-      });
+  const authUser = (action, cb) => {
+    return (payload) => {
+      state.loading = true;
+      const response = action(payload);
+      response
+        .then((res) => {
+          cb(res);
+        })
+        .catch(() => {
+          logOut();
+        })
+        .finally(() => {
+          state.loading = false;
+          state.message = "";
+          state.error = null;
+        });
+    };
+  };
+
+  function loginUserSuccess(res) {
+    state.token = res.data.token;
+    state.isAuthenticated = true;
+    localStorage.setItem("contactKeeperToken", res.data.token);
   }
-  function loadUser(action) {
+  const registerUser = authUser(registerUserService, loginUserSuccess);
+  const loginUser = authUser(loginUserService, loginUserSuccess);
+
+  function loadUserSuccess(res) {
     state.loading = false;
     state.isAuthenticated = true;
-    state.user = action.payload;
+    state.user = res.data;
   }
-  function loginUser() {}
+  const loadUser = authUser(loadUserService, loadUserSuccess);
+
   function logOut() {
     setAuthToken(false);
     localStorage.removeItem("contactKeeperToken");
