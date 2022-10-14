@@ -1,8 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth.store";
-import alertMessage from "../utils/alertMessages";
-import Notification from "../utils/Notification";
 
 const authStore = useAuthStore();
 const { loginUser } = authStore;

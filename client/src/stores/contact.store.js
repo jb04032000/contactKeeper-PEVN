@@ -1,4 +1,4 @@
-import { computed, reactive } from "vue";
+import { reactive } from "vue";
 import { defineStore } from "pinia";
 import {
   addContactService,
@@ -7,7 +7,7 @@ import {
   updateContactService,
 } from "./services/contact.services";
 
-export const useCounterStore = defineStore("contact", () => {
+export const useContectStore = defineStore("contact", () => {
   let state = reactive({
     contactUpdated: false,
     contacts: [],
@@ -21,6 +21,7 @@ export const useCounterStore = defineStore("contact", () => {
   const contacts = (action, cb) => {
     return (payload) => {
       state.loading = true;
+      state.contactUpdated = false;
       const response = action(payload);
       response
         .then((res) => {

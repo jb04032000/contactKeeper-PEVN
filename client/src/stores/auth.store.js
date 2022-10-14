@@ -47,7 +47,6 @@ export const useAuthStore = defineStore("auth", () => {
   const loginUser = authUser(loginUserService, loginUserSuccess);
 
   function loadUserSuccess(res) {
-    state.loading = false;
     state.isAuthenticated = true;
     state.user = res.data;
   }

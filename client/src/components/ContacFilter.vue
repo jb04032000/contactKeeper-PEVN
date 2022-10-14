@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watchEffect } from "vue";
-import { useCounterStore } from "../stores/contact.store";
+import { useContectStore } from "../stores/contact.store";
 
-const contactStore = useCounterStore();
+const contactStore = useContectStore();
 const { setfilterContacts, clearFilteredContacts } = contactStore;
 
 const search = ref("");

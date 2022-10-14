@@ -1,11 +1,11 @@
 import { storeToRefs } from "pinia";
 import { ref, watchEffect } from "vue";
-import { useCounterStore } from "../../stores/contact.store";
+import { useContectStore } from "../../stores/contact.store";
 import alertMessage from "../../utils/alertMessages";
 import Notification from "../../utils/Notification";
 
 export default function useContactForm() {
-  const contactStore = useCounterStore();
+  const contactStore = useContectStore();
   const { state } = storeToRefs(contactStore);
   const { addContact, updateContact, clearCurrentContact, getContactList } =
     contactStore;

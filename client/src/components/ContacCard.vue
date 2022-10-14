@@ -1,9 +1,9 @@
 <script setup>
-import { useCounterStore } from "../stores/contact.store";
+import { useContectStore } from "../stores/contact.store";
 
 const props = defineProps(["contact"]);
 const { id, name, type, email, phone } = props.contact;
-const contactStore = useCounterStore();
+const contactStore = useContectStore();
 const { deleteContact, setCurrentContact } = contactStore;
 </script>
 
