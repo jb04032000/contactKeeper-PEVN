@@ -55,7 +55,7 @@ router.post(
 
       jwt.sign(
         payload,
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET || "thisIsMySecretofJWT",
         {
           // expiresIn: process.env.JWT_EXPIRATION_TIME,
           expiresIn: 3600,
