@@ -22,8 +22,8 @@ const connectionString = process.env.DEV_DATABASE_URL;
 // if project has been deployed, connect with the host's DATABASE_URL
 // else connect with the local DATABASE_URL
 const pool = new pg.Pool({
-  connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: isProduction,
+  connectionString: process.env.DEV_DATABASE_URL,
+  ssl: true,
 });
 
 // display message on success if successful
