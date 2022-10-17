@@ -24,6 +24,10 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.send("GET Request Called");
+});
+
 //Define Routes
 app.use("/api/auth", require("./routes/auth.routes.js"));
 app.use("/api/users", require("./routes/users.routes.js"));
