@@ -28,5 +28,5 @@ const pool = new pg.Pool({
 
 // display message on success if successful
 pool.on("connect", () => {
-  console.log("Teamwork Database connected successfully!");
+  console.log("Database connected successfully!");
 });
