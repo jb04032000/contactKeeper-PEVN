@@ -8,7 +8,6 @@ const { contacts } = useContactList();
 
 <template>
   <ContacFilter v-if="contacts" />
-
   <transition name="switch" mode="out-in">
     <div>
       <transition-group name="list" appear>

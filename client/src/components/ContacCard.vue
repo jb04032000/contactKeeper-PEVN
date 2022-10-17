@@ -1,8 +1,9 @@
 <script setup>
+import { toRef } from "vue";
 import { useContectStore } from "../stores/contact.store";
 
 const props = defineProps(["contact"]);
-const { id, name, type, email, phone } = props.contact;
+const contact = toRef(props, "contact");
 const contactStore = useContectStore();
 const { deleteContact, setCurrentContact } = contactStore;
 </script>
@@ -11,26 +12,28 @@ const { deleteContact, setCurrentContact } = contactStore;
   <div class="w-100 pt-2">
     <div class="card shadow border-0">
       <div class="card-header d-flex justify-content-between">
-        <span v-if="name" class="fw-bold">{{ name }}</span>
+        <span v-if="contact.name" class="fw-bold">{{ contact.name }}</span>
         <span
-          v-if="type"
+          v-if="contact.type"
           class="badge text-capitalize"
           :class="[
-            type === 'Professional' ? 'bg-warning text-dark' : 'bg-danger ',
+            contact.type === 'Professional'
+              ? 'bg-warning text-dark'
+              : 'bg-danger ',
           ]"
         >
-          {{ type }}
+          {{ contact.type }}
         </span>
       </div>
       <div class="card-body">
         <div class="card-text">
-          <div v-if="email">
+          <div v-if="contact.email">
             <i class="fas fa-envelope-open text-info me-3" />
-            {{ email }}
+            {{ contact.email }}
           </div>
-          <div v-if="phone">
+          <div v-if="contact.phone">
             <i class="fas fa-phone text-info me-3" />
-            {{ phone }}
+            {{ contact.phone }}
           </div>
         </div>
         <hr />

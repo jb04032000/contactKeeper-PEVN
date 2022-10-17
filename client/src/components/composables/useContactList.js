@@ -1,5 +1,5 @@
 import { storeToRefs } from "pinia";
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, toRefs } from "vue";
 import { useContectStore } from "../../stores/contact.store";
 
 export default function useContactList() {
@@ -14,5 +14,5 @@ export default function useContactList() {
     }
     contacts.value = [...state.value.contacts.sort((a, b) => b.id - a.id)];
   });
-  return { contacts };
+  return toRefs({ contacts });
 }
