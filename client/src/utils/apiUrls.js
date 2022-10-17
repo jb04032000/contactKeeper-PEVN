@@ -2,8 +2,7 @@
 export const baseUrl = "https://contactkeeper-pevn-by-jb.herokuapp.com/";
 
 const API_URLS = {
-  // auth: "api/auth",
-  auth: "",
+  auth: "api/auth",
   users: "api/users",
   contacts: "api/contacts",
 };

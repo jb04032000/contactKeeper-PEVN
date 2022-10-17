@@ -29,8 +29,7 @@ app.get("/", (req, res) => {
 });
 
 //Define Routes
-app.use("", require("./routes/auth.routes.js"));
-// app.use("/api/auth", require("./routes/auth.routes.js"));
+app.use("/api/auth", require("./routes/auth.routes.js"));
 app.use("/api/users", require("./routes/users.routes.js"));
 app.use("/api/contacts", require("./routes/contacts.routes.js"));
 
